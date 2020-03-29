@@ -1,7 +1,7 @@
 description = "Allure Kotlin Model Integration"
 
 plugins {
-    id("kotlinx-serialization")
+    id("kotlinx-serialization") version Versions.kotlin
 }
 
 dependencies {
