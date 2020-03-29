@@ -17,7 +17,6 @@ import io.qameta.allure.kotlin.test.function
 import io.qameta.allure.kotlin.util.ResultsUtils.HOST_LABEL_NAME
 import io.qameta.allure.kotlin.util.ResultsUtils.THREAD_LABEL_NAME
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.iterable.Extractor
 import org.junit.jupiter.api.Test
 import org.junit.runner.JUnitCore
 
@@ -145,7 +144,7 @@ class AllureJunit4Test {
         val testResults = results.testResults
         Assertions.assertThat(testResults)
             .hasSize(2)
-            .flatExtracting(extractor(TestResult::status))
+            .flatExtracting(function(TestResult::status))
             .containsExactly(Status.SKIPPED, Status.SKIPPED)
     }
 
@@ -194,7 +193,7 @@ class AllureJunit4Test {
 
         Assertions.assertThat(testResults.flatMap { it.steps })
             .hasSize(2)
-            .extracting(extractor(StepResult::name))
+            .extracting(function(StepResult::name))
             .containsExactly("Step 1", "Step 2")
     }
 
@@ -328,5 +327,3 @@ class AllureJunit4Test {
         }
     }
 }
-
-private fun <T, R> extractor(extraction: (T) -> R): Extractor<T, R> = Extractor { extraction(it) }

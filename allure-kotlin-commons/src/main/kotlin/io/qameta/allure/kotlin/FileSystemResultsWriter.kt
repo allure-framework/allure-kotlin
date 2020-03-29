@@ -3,13 +3,14 @@ package io.qameta.allure.kotlin
 import io.qameta.allure.kotlin.model.TestResult
 import io.qameta.allure.kotlin.model.TestResultContainer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
 class FileSystemResultsWriter(private val outputDirectory: File) : AllureResultsWriter {
-    private val mapper: Json = Json.indented
+    private val mapper: Json = Json(JsonConfiguration(prettyPrint = true, useArrayPolymorphism = true))
 
     override fun write(testResult: TestResult) {
         val testResultName = generateTestResultName(testResult.uuid)
