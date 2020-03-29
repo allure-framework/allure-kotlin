@@ -8,7 +8,7 @@ import io.qameta.allure.kotlin.model.FixtureResult
 import io.qameta.allure.kotlin.model.StepResult
 import io.qameta.allure.kotlin.model.TestResult
 import io.qameta.allure.kotlin.model.TestResultContainer
-import io.qameta.allure.kotlin.util.extractor
+import io.qameta.allure.kotlin.test.function
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -109,7 +109,7 @@ class AllureLifecycleTest {
             .hasFieldOrPropertyWithValue("uuid", uuid)
             .hasFieldOrPropertyWithValue("name", name)
         Assertions.assertThat(actual.steps)
-            .flatExtracting(extractor(StepResult::name))
+            .flatExtracting(function(StepResult::name))
             .containsExactly(firstStepName, secondStepName)
     }
 
@@ -145,7 +145,7 @@ class AllureLifecycleTest {
             .hasFieldOrPropertyWithValue("name", name)
             .hasFieldOrPropertyWithValue("fullName", fullName)
         Assertions.assertThat(actual.steps)
-            .flatExtracting(extractor(StepResult::name))
+            .flatExtracting(function(StepResult::name))
             .containsExactly(stepName)
     }
 
@@ -199,7 +199,7 @@ class AllureLifecycleTest {
             .hasFieldOrPropertyWithValue("name", firstName)
         Assertions.assertThat(fixtureResult.steps)
             .hasSize(2)
-            .flatExtracting(extractor(StepResult::name))
+            .flatExtracting(function(StepResult::name))
             .containsExactly(firstStepName, secondStepName)
     }
 
