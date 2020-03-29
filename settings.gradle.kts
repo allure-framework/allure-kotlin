@@ -7,8 +7,8 @@ pluginManagement {
 
     resolutionStrategy.eachPlugin {
         when (requested.id.id) {
-            "org.jetbrains.kotlin.jvm" -> "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-            "kotlinx-serialization" -> "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+            "org.jetbrains.kotlin.jvm" -> "org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}"
+            "kotlinx-serialization" -> "org.jetbrains.kotlin:kotlin-serialization:${requested.version}"
             else -> null
         }?.let(::useModule)
     }
