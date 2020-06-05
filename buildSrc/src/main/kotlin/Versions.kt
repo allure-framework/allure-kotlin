@@ -8,7 +8,7 @@ object Versions {
 
     const val assertJ = "3.15.0"
 
-    const val mockk = "1.9.3"
+    const val mockk = "1.10.0"
 
     const val randomBeans = "3.9.0"
 }
