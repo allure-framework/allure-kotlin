@@ -14,5 +14,5 @@ template: |
 
   ## 👀 Links
 
-  [Commits since $PREVIOUS_TAG](https://github.com/qameta/allure-ee-java/compare/$PREVIOUS_TAG...master)
+  [Commits since $PREVIOUS_TAG](https://github.com/allure-framework/allure-kotlin/compare/$PREVIOUS_TAG...master)
   
