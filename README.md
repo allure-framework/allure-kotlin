@@ -45,7 +45,7 @@ class MyParameterizedTest {
 
 ## Connection with allure-java
 
-The core of this library was ported from `allure-java` in order to achieve compatibility with Java 1.6 and Android API 21. Thanks to that `allure-kotlin` has the same features, test coverage and solutions as `allure-java`. Following modules have been migrated:
+Following modules have been migrated:
 
 * `allure-model` -> `allure-kotlin-model`
 * `allure-java-commons` -> `allure-kotlin-commons`
@@ -61,9 +61,10 @@ Following changes have to be made in order to keep the compatibility with Java 1
 
 ## Contributing
 
-...
+Thanks to all people who contributed. Especially [@kamildziadek](https://github.com/kamildziadek) who started allure-kotlin. [[Contribute]](.github/CONTRIBUTING.md).
 
 ## License
+
 The Allure Framework is released under version 2.0 of the [Apache License][license].
 
 [gradle-test-listener]: https://discuss.gradle.org/t/how-to-attach-a-runlistener-to-your-junit-4-tests-in-gradle/30788
