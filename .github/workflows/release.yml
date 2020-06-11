@@ -17,3 +17,6 @@ jobs:
       run: ./gradlew build -Pversion=${GITHUB_REF:10}
     - name: "Publish"
       run: ./gradlew publish -Pversion=${GITHUB_REF:10}
+      env:
+        PACKAGES_USER: ${{ secrets.PACKAGES_USER }}
+        PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
