@@ -20,6 +20,7 @@ val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
 configure(subprojects) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(from = "$gradleScriptDir/maven-publish.gradle")
+    apply(from = "$gradleScriptDir/github-publish.gradle")
 
     dependencies {
         implementation(kotlin("stdlib", Versions.kotlin))
