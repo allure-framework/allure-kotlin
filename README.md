@@ -43,6 +43,22 @@ class MyParameterizedTest {
 }
 ```
 
+## Connection with allure-java
+
+The core of this library was ported from `allure-java` in order to achieve compatibility with Java 1.6 and Android API 21. Thanks to that `allure-kotlin` has the same features, test coverage and solutions as `allure-java`. Following modules have been migrated:
+
+* `allure-model` -> `allure-kotlin-model`
+* `allure-java-commons` -> `allure-kotlin-commons`
+* `allure-java-commons-test` -> `allure-kotlin-commons-test`
+
+Following changes have to be made in order to keep the compatibility with Java 1.6: 
+* `java.util.Optional` (Java 1.8+) -> Kotlin null type & safe call operators
+* `java.util.stream.*` (Java 1.8+) -> Kotlin collection operators
+* `java.nio.file.*` (Java 1.7+) -> migrating form `Path` to `File`
+* repeatable annotations (Java 1.8+) -> no alternatives, feature not supported by JVM 1.6 
+
+*The only part that was not migrated is aspects support.*
+
 ## Contributing
 
 ...
