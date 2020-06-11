@@ -48,11 +48,10 @@ class MyParameterizedTest {
 ...
 
 ## License
-
-...
-
+The Allure Framework is released under version 2.0 of the [Apache License][license].
 
 [gradle-test-listener]: https://discuss.gradle.org/t/how-to-attach-a-runlistener-to-your-junit-4-tests-in-gradle/30788
 [junit-foundation]: https://github.com/Nordstrom/JUnit-Foundation
 [allure-docs]: https://docs.qameta.io/allure/
 [maven-surfire-plugin]: https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html
+[license]: http://www.apache.org/licenses/LICENSE-2.0 "Apache License 2.0"
