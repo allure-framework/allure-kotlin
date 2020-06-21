@@ -11,4 +11,22 @@ object Versions {
     const val mockk = "1.10.0"
 
     const val randomBeans = "3.9.0"
+
+    object Android {
+        const val gradlePlugin = "4.0.0"
+
+        const val compileSdk = 28
+        const val targetSdk = 28
+        const val minSdk = 21
+
+        const val androidX = "1.1.0"
+
+        object Test {
+            const val runner = "1.2.0"
+            const val junit = "1.1.1"
+            const val espresso = "3.2.0"
+            const val robolectric = "4.3.1"
+        }
+    }
+
 }

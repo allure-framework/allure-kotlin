@@ -3,6 +3,20 @@ plugins {
     kotlin("jvm") version Versions.kotlin
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
+        classpath("org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}")
+        classpath("com.android.tools.build:gradle:${Versions.Android.gradlePlugin}")
+    }
+}
+
 allprojects {
     group = "io.qameta.allure"
     version = version
@@ -17,7 +31,9 @@ allprojects {
 
 val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
 
-configure(subprojects) {
+configure(subprojects
+        .filter { !it.name.contains("android") }
+) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(from = "$gradleScriptDir/maven-publish.gradle")
     apply(from = "$gradleScriptDir/github-publish.gradle")
