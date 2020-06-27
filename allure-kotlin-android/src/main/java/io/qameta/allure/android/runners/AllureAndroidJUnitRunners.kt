@@ -22,26 +22,44 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
     private val delegate = AndroidJUnit4(clazz)
 
     override fun run(notifier: RunNotifier?) {
-        notifier?.addListener(createAllureListener())
-        if (isDeviceTest()) {
-            requestExternalStoragePermissions()
+        createListener()?.let {
+            notifier?.addListener(it)
         }
         delegate.run(notifier)
     }
 
-    private fun createAllureListener(): AllureJunit4 {
-        return with(AllureAndroidLifecycle) {
-            Allure.lifecycle = this
-            AllureJunit4(this)
-        }
+    private fun createListener(): RunListener? =
+        if (isDeviceTest()) createDeviceListener() else createRobolectricListener()
+
+    /**
+     * Creates listener for the tests running on a device.
+     *
+     * In instrumentation tests the listeners are shared between the class runners,
+     * hence extra logic has to be put in place, to avoid attaching the listener more than once.
+     *
+     * Check is made whether [AllureAndroidLifecycle] has been specified as [Allure.lifecycle],
+     * if so it means that in one way or another the listener has already been attached.
+     */
+    private fun createDeviceListener(): RunListener? {
+        if (Allure.lifecycle == AllureAndroidLifecycle) return null
+
+        Allure.lifecycle = AllureAndroidLifecycle
+        requestExternalStoragePermissions()
+        return AllureJunit4(AllureAndroidLifecycle)
     }
+
+    /**
+     * Creates listener for tests running in an emulated Robolectric environment.
+     *
+     * The listeners are not shared between class runners, hence they have to be added to each class runner separately.
+     */
+    private fun createRobolectricListener(): RunListener? = AllureJunit4()
 
     override fun getDescription(): Description = delegate.description
 
     override fun filter(filter: Filter?) = delegate.filter(filter)
 
     override fun sort(sorter: Sorter?) = delegate.sort(sorter)
-
 }
 
 /**
