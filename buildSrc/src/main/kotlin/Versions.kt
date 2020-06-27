@@ -20,6 +20,7 @@ object Versions {
         const val minSdk = 21
 
         const val androidX = "1.1.0"
+        const val multiDex = "2.0.1"
 
         object Test {
             const val runner = "1.2.0"
