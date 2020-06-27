@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
+import java.util.UUID
 
 class FileSystemResultsWriter(private val outputDirectory: File) : AllureResultsWriter {
     private val mapper: Json = Json(JsonConfiguration(prettyPrint = true, useArrayPolymorphism = true))
@@ -52,7 +52,7 @@ class FileSystemResultsWriter(private val outputDirectory: File) : AllureResults
 
     private fun createDirectories(directory: File) {
         val parent = directory.parentFile
-        if (!parent.exists()) {
+        if (parent?.exists() == false) {
             createDirectories(parent)
         }
         if (!directory.exists() && !directory.mkdirs()) {
