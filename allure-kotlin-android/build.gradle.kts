@@ -32,4 +32,5 @@ dependencies {
     implementation("androidx.test.ext:junit:${Versions.Android.Test.junit}")
     implementation("androidx.test:runner:${Versions.Android.Test.runner}")
     implementation("androidx.multidex:multidex:${Versions.Android.multiDex}")
+    implementation("androidx.test.uiautomator:uiautomator:${Versions.Android.Test.uiAutomator}")
 }

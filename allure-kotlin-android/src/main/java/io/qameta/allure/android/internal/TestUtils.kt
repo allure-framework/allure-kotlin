@@ -2,7 +2,10 @@ package io.qameta.allure.android.internal
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.permission.PermissionRequester
+import androidx.test.uiautomator.UiDevice
 
 /**
  * Gives information about the environment in which the tests are running:
@@ -24,3 +27,12 @@ internal fun requestExternalStoragePermissions() {
         requestPermissions()
     }
 }
+
+/**
+ * Retrieves [UiDevice] if it's available, otherwise null is returned.
+ * In Robolectric tests [UiDevice] is inaccessible and this property serves as a safe way of accessing it.
+ */
+internal val uiDevice: UiDevice?
+    get() = runCatching { UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()) }
+        .onFailure { Log.d("UiDevice", "UiDevice unavailable") }
+        .getOrNull()

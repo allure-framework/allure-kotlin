@@ -1,7 +1,6 @@
 package io.qameta.allure.android.rules
 
 import io.qameta.allure.android.allureScreenshot
-import io.qameta.allure.kotlin.Allure
 import org.junit.rules.*
 import org.junit.runner.Description
 import org.junit.runners.model.*
@@ -15,7 +14,7 @@ import kotlin.Result
  */
 class ScreenshotRule(
     private val mode: Mode = Mode.END,
-    private val screenshotName: String = "end_screenshot"
+    private val screenshotName: String = "end-screenshot"
 ) : TestRule {
 
     override fun apply(base: Statement?, description: Description?): Statement = object : Statement() {

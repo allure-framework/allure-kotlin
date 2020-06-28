@@ -27,6 +27,7 @@ object Versions {
             const val junit = "1.1.1"
             const val espresso = "3.2.0"
             const val robolectric = "4.3.1"
+            const val uiAutomator = "2.2.0"
         }
     }
 
