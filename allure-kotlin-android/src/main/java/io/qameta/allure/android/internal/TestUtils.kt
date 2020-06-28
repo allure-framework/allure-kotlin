@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.permission.PermissionRequester
 import androidx.test.uiautomator.UiDevice
+import java.io.File
 
 /**
  * Gives information about the environment in which the tests are running:
@@ -34,5 +35,10 @@ internal fun requestExternalStoragePermissions() {
  */
 internal val uiDevice: UiDevice?
     get() = runCatching { UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()) }
-        .onFailure { Log.d("UiDevice", "UiDevice unavailable") }
+        .onFailure { Log.e("UiDevice", "UiDevice unavailable") }
         .getOrNull()
+
+internal fun createTemporaryFile(prefix: String = "temp", suffix: String? = null): File {
+    val cacheDir = InstrumentationRegistry.getInstrumentation().targetContext.cacheDir
+    return createTempFile(prefix, suffix, cacheDir)
+}

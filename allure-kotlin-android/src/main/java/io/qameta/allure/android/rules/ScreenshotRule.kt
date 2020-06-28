@@ -11,6 +11,7 @@ import kotlin.Result
  * It is then added as an attachment of a test case (with name [screenshotName]).
  *
  * By default, it will take a screenshot at the end of every test case (whether it failed or finished successfully).
+ * Available since API 18, no effect for other versions.
  */
 class ScreenshotRule(
     private val mode: Mode = Mode.END,
