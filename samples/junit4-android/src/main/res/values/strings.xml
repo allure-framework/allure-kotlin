@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="click">Click me!</string>
+    <string name="before_click">Button not clicked :(</string>
+    <string name="after_click">Button clicked!!</string>
+</resources>
