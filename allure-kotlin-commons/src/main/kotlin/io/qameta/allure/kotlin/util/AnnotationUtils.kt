@@ -7,9 +7,7 @@ import io.qameta.allure.kotlin.model.Link
 import java.lang.reflect.AnnotatedElement
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
-import java.util.*
 import java.util.logging.Logger
-import kotlin.collections.HashSet
 
 /**
  * Collection of utils used by Allure integration to extract meta information from
@@ -17,8 +15,10 @@ import kotlin.collections.HashSet
  *
  */
 object AnnotationUtils {
+
     private val LOGGER: Logger = loggerFor<AnnotationUtils>()
     private const val VALUE_METHOD_NAME = "value"
+
     /**
      * Returns links created from Allure meta annotations specified on annotated element.
      *
@@ -177,9 +177,8 @@ object AnnotationUtils {
                 is Array<*> -> return data.map(Any?::toString)
             }
         }
-        return listOf(Objects.toString(data))
+        return listOf(java.lang.String.valueOf(data))
     }
-
 
     private fun extractRepeatable(annotation: Annotation): List<Annotation> {
         return if (isRepeatableWrapper(annotation)) {

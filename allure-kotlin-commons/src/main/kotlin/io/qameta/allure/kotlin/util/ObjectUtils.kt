@@ -1,10 +1,10 @@
 package io.qameta.allure.kotlin.util
 
-import java.util.*
 import java.util.logging.Logger
 
 object ObjectUtils {
     private val LOGGER: Logger = loggerFor<ObjectUtils>()
+
     /**
      * Returns string representation of given object. Pretty prints arrays.
      *
@@ -27,7 +27,7 @@ object ObjectUtils {
                     is Array<*> -> return data.contentToString()
                 }
             }
-            Objects.toString(data)
+            java.lang.String.valueOf(data)
         } catch (e: Exception) {
             LOGGER.error("Could not convert object to string", e)
             "<NPE>"

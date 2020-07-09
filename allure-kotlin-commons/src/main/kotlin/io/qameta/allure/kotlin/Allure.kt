@@ -1,12 +1,14 @@
 package io.qameta.allure.kotlin
 
-import io.qameta.allure.kotlin.model.*
+import io.qameta.allure.kotlin.model.Label
 import io.qameta.allure.kotlin.model.Link
+import io.qameta.allure.kotlin.model.Status
+import io.qameta.allure.kotlin.model.StepResult
+import io.qameta.allure.kotlin.model.TestResult
 import io.qameta.allure.kotlin.util.ExceptionUtils
 import io.qameta.allure.kotlin.util.ResultsUtils
 import java.io.InputStream
-import java.nio.charset.StandardCharsets
-import java.util.*
+import java.util.UUID
 
 /**
  * The class contains some useful methods to work with [AllureLifecycle].
@@ -15,6 +17,7 @@ object Allure {
 
     private const val TXT_EXTENSION = ".txt"
     private const val TEXT_PLAIN = "text/plain"
+
     @JvmStatic
     var lifecycle: AllureLifecycle = AllureLifecycle()
 
@@ -233,7 +236,7 @@ object Allure {
     ) {
         lifecycle.addAttachment(
             name = name,
-            body = content.toByteArray(StandardCharsets.UTF_8),
+            body = content.toByteArray(Charsets.UTF_8),
             type = type,
             fileExtension = fileExtension
         )
@@ -267,6 +270,7 @@ object Allure {
      * Step context.
      */
     interface StepContext {
+
         fun name(name: String)
         fun <T> parameter(name: String, value: T): T
     }
@@ -275,6 +279,7 @@ object Allure {
      * Basic implementation of step context.
      */
     private class DefaultStepContext(private val uuid: String) : StepContext {
+
         override fun name(name: String) {
             lifecycle.updateStep(uuid) { it.name = name }
         }

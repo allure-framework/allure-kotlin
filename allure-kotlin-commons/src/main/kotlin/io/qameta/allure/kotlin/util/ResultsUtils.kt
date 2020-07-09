@@ -1,8 +1,18 @@
 package io.qameta.allure.kotlin.util
 
-import io.qameta.allure.kotlin.*
-import io.qameta.allure.kotlin.model.*
+import io.qameta.allure.kotlin.Epic
+import io.qameta.allure.kotlin.Feature
+import io.qameta.allure.kotlin.Issue
+import io.qameta.allure.kotlin.Owner
+import io.qameta.allure.kotlin.Severity
+import io.qameta.allure.kotlin.SeverityLevel
+import io.qameta.allure.kotlin.Story
+import io.qameta.allure.kotlin.TmsLink
+import io.qameta.allure.kotlin.model.Label
 import io.qameta.allure.kotlin.model.Link
+import io.qameta.allure.kotlin.model.Parameter
+import io.qameta.allure.kotlin.model.Status
+import io.qameta.allure.kotlin.model.StatusDetails
 import io.qameta.allure.kotlin.util.ObjectUtils.toString
 import io.qameta.allure.kotlin.util.PropertiesUtils.loadAllureProperties
 import java.io.IOException
@@ -12,8 +22,6 @@ import java.lang.management.ManagementFactory
 import java.lang.reflect.Method
 import java.math.BigInteger
 import java.net.InetAddress
-import java.net.UnknownHostException
-import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.logging.Logger
@@ -241,7 +249,6 @@ object ResultsUtils {
             return listOfNotNull(fromProperty, fromEnv).firstOrNull() ?: realThreadName
         }
 
-
     @JvmStatic
     fun getStatus(throwable: Throwable?): Status? {
         return throwable?.let { if (it is AssertionError) Status.FAILED else Status.BROKEN }
@@ -294,11 +301,11 @@ object ResultsUtils {
         parameterTypes: List<String>
     ): String {
         val md = md5Digest.apply {
-            update(className.toByteArray(StandardCharsets.UTF_8))
-            update(methodName.toByteArray(StandardCharsets.UTF_8))
+            update(className.toByteArray(Charsets.UTF_8))
+            update(methodName.toByteArray(Charsets.UTF_8))
         }
         parameterTypes.asSequence()
-            .map { string -> string.toByteArray(StandardCharsets.UTF_8) }
+            .map { string -> string.toByteArray(Charsets.UTF_8) }
             .forEach(md::update)
         val bytes = md.digest()
         return bytesToHex(bytes)
@@ -306,7 +313,7 @@ object ResultsUtils {
 
     @JvmStatic
     fun md5(source: String): String {
-        return bytesToHex(md5Digest.digest(source.toByteArray(StandardCharsets.UTF_8)))
+        return bytesToHex(md5Digest.digest(source.toByteArray(Charsets.UTF_8)))
     }
 
     @JvmStatic
@@ -331,7 +338,7 @@ object ResultsUtils {
     private val realHostName: String
         get() = cachedHost ?: try {
             InetAddress.getLocalHost().hostName ?: "default"
-        } catch (e: UnknownHostException) {
+        } catch (e: Exception) {
             LOGGER.debug("Could not get host name $e")
             "default"
         }.also {
@@ -359,7 +366,7 @@ object ResultsUtils {
     ): String? {
         return try {
             classLoader.getResourceAsStream(resourceName)?.toByteArray()
-                ?.let { String(it, StandardCharsets.UTF_8) }
+                ?.let { String(it, Charsets.UTF_8) }
         } catch (e: IOException) {
             LOGGER.error("Unable to process description resource file", e)
             null

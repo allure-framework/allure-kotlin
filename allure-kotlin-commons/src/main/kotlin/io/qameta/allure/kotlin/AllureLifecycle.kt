@@ -15,7 +15,7 @@ import java.io.InputStream
 import java.util.*
 import java.util.logging.Logger
 
-class AllureLifecycle @JvmOverloads constructor(
+open class AllureLifecycle @JvmOverloads constructor(
     private val writer: AllureResultsWriter = getDefaultWriter(),
     private val notifier: LifecycleNotifier = getDefaultNotifier()
 ) {
