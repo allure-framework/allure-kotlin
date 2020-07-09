@@ -15,7 +15,6 @@ private const val TAG = "AllureScreenshot"
  * Quality must be in range [0..100] or an exception will be thrown.
  *
  * It uses [androidx.test.uiautomator.UiDevice] to take the screenshot.
- * Available since API 18, no effect for other versions.
  *
  * @return true if screen shot is created and attached successfully, false otherwise
  */

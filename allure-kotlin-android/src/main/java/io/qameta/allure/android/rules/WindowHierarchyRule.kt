@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Dumps window hierarchy when the test fails and adds it as an attachment to allure results.
- * Available since API 18, no effect for other versions.
  */
 class WindowHierarchyRule(private val fileName: String = "window-hierarchy") : TestRule {
 
