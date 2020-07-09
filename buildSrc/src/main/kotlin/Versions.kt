@@ -17,7 +17,7 @@ object Versions {
 
         const val compileSdk = 28
         const val targetSdk = 28
-        const val minSdk = 21
+        const val minSdk = 15
 
         const val androidX = "1.1.0"
         const val multiDex = "2.0.1"
