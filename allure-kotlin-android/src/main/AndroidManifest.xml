@@ -1,5 +1,1 @@
-<manifest xmlns:tools="http://schemas.android.com/tools"
-    package="io.qameta.allure.android">
-
-    <uses-sdk tools:overrideLibrary="android_libs.ub_uiautomator" />
-</manifest>
+<manifest package="io.qameta.allure.android" />
