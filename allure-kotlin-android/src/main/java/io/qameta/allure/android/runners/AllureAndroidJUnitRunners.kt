@@ -7,6 +7,7 @@ import androidx.test.runner.AndroidJUnitRunner
 import io.qameta.allure.android.AllureAndroidLifecycle
 import io.qameta.allure.android.internal.isDeviceTest
 import io.qameta.allure.android.internal.requestExternalStoragePermissions
+import io.qameta.allure.android.listeners.ExternalStoragePermissionsListener
 import io.qameta.allure.kotlin.Allure
 import io.qameta.allure.kotlin.junit4.AllureJunit4
 import org.junit.runner.*
@@ -29,7 +30,12 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
     }
 
     private fun createListener(): RunListener? =
-        if (isDeviceTest()) createDeviceListener() else createRobolectricListener()
+        if (isDeviceTest()) {
+            requestExternalStoragePermissions()
+            createDeviceListener()
+        } else {
+            createRobolectricListener()
+        }
 
     /**
      * Creates listener for the tests running on a device.
@@ -44,7 +50,6 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
         if (Allure.lifecycle == AllureAndroidLifecycle) return null
 
         Allure.lifecycle = AllureAndroidLifecycle
-        requestExternalStoragePermissions()
         return AllureJunit4(AllureAndroidLifecycle)
     }
 
@@ -72,15 +77,11 @@ open class AllureAndroidJUnitRunner : AndroidJUnitRunner() {
         Allure.lifecycle = AllureAndroidLifecycle
         val listenerArg = listOfNotNull(
             arguments.getCharSequence("listener"),
+            ExternalStoragePermissionsListener::class.java.name,
             AllureJunit4::class.java.name
         ).joinToString(separator = ",")
         arguments.putCharSequence("listener", listenerArg)
         super.onCreate(arguments)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requestExternalStoragePermissions()
     }
 
 }
