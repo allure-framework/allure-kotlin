@@ -14,7 +14,7 @@ jobs:
       with:
         java-version: 1.8
     - name: "Build"
-      run: ./gradlew build -Pversion=${GITHUB_REF:10}
+      run: ./gradlew build -x :samples:junit4-android:testReleaseUnitTest -x :samples:junit4-android:testDebugUnitTest -Pversion=${GITHUB_REF:10}
     - name: "Publish"
       run: ./gradlew publish -Pversion=${GITHUB_REF:10}
       env:
