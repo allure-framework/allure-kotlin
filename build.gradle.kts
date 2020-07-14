@@ -31,12 +31,7 @@ allprojects {
 
 val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
 
-configure(subprojects
-              .filter { !it.name.contains("android") }
-              .filter { it.parent?.name != "samples" }
-) {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(from = "$gradleScriptDir/maven-publish.gradle")
+configure(subprojects) {
     apply(from = "$gradleScriptDir/github-publish.gradle")
 
     dependencies {
