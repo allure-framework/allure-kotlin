@@ -10,6 +10,7 @@ buildscript {
         jcenter()
     }
     dependencies {
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}")
@@ -29,10 +30,12 @@ allprojects {
     }
 }
 
-val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
-
-configure(subprojects) {
-    apply(from = "$gradleScriptDir/github-publish.gradle")
+configure(subprojects
+        .filter { !it.name.contains("android") }
+        .filter { it.parent?.name != "samples" }
+) {
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(from = "${rootProject.projectDir}/gradle/bintray.gradle")
 
     dependencies {
         implementation(kotlin("stdlib", Versions.kotlin))
