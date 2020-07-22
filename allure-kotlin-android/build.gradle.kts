@@ -5,8 +5,6 @@ plugins {
     id("kotlin-android")
 }
 
-apply(from = "${rootProject.projectDir}/gradle/bintray.gradle")
-
 android {
     compileSdkVersion(Versions.Android.compileSdk)
     defaultConfig {

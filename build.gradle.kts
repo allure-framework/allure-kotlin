@@ -18,6 +18,8 @@ buildscript {
     }
 }
 
+val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
+
 allprojects {
     group = "io.qameta.allure"
     version = version
@@ -28,6 +30,8 @@ allprojects {
         google()
         jcenter()
     }
+
+    apply(from = "$gradleScriptDir/bintray.gradle")
 }
 
 configure(subprojects
@@ -35,7 +39,6 @@ configure(subprojects
         .filter { it.parent?.name != "samples" }
 ) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(from = "${rootProject.projectDir}/gradle/bintray.gradle")
 
     dependencies {
         implementation(kotlin("stdlib", Versions.kotlin))
