@@ -10,12 +10,15 @@ buildscript {
         jcenter()
     }
     dependencies {
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}")
         classpath("com.android.tools.build:gradle:${Versions.Android.gradlePlugin}")
     }
 }
+
+val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
 
 allprojects {
     group = "io.qameta.allure"
@@ -27,17 +30,15 @@ allprojects {
         google()
         jcenter()
     }
+
+    apply(from = "$gradleScriptDir/bintray.gradle")
 }
 
-val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
-
 configure(subprojects
-              .filter { !it.name.contains("android") }
-              .filter { it.parent?.name != "samples" }
+        .filter { !it.name.contains("android") }
+        .filter { it.parent?.name != "samples" }
 ) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(from = "$gradleScriptDir/maven-publish.gradle")
-    apply(from = "$gradleScriptDir/github-publish.gradle")
 
     dependencies {
         implementation(kotlin("stdlib", Versions.kotlin))

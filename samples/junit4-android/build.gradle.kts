@@ -1,3 +1,5 @@
+description = "Allure Kotlin Android Samples"
+
 plugins {
     id("com.android.application")
     id("kotlin-android")

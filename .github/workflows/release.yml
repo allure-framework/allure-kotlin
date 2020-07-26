@@ -8,15 +8,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: "Build"
-      run: ./gradlew build -x :samples:junit4-android:testReleaseUnitTest -x :samples:junit4-android:testDebugUnitTest -Pversion=${GITHUB_REF:10}
-    - name: "Publish"
-      run: ./gradlew publish -Pversion=${GITHUB_REF:10}
-      env:
-        PACKAGES_USER: ${{ secrets.PACKAGES_USER }}
-        PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+      - uses: actions/checkout@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: "Build"
+        run: ./gradlew build -x :samples:junit4-android:testReleaseUnitTest -x :samples:junit4-android:testDebugUnitTest -Pversion=${GITHUB_REF:10}
+      - name: "Publish to Bintray"
+        run: ./gradlew bintrayUpload -Pversion=${GITHUB_REF:10}
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
