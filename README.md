@@ -1,3 +1,6 @@
+[![Build Status](https://github.com/allure-framework/allure-kotlin/workflows/Build/badge.svg)](https://github.com/allure-framework/allure-kotlin/actions)
+[![Download](https://api.bintray.com/packages/qameta/maven/allure-kotlin/images/download.svg)](https://bintray.com/qameta/maven/allure-kotlin/_latestVersion)
+
 # Allure Kotlin Integrations
 
 The repository contains Allure2 adaptors for JVM-based test frameworks targeting Kotlin and Java with 1.6 source compatibility. 
@@ -5,6 +8,11 @@ The repository contains Allure2 adaptors for JVM-based test frameworks targeting
 The core of this library was ported from `allure-java`. Thanks to that `allure-kotlin` has the same API, features, test coverage and solutions as `allure-java`. On top of the core library support for Kotlin and Android test frameworks were added.
 
 Check out the [Allure Documentation][allure-docs].
+
+## Supported frameworks
+* JUnit4 
+* Android Robolectric (via AndroidX Test)
+* Android Instrumentation (via AndroidX Test)
 
 ## Getting started
 
@@ -43,6 +51,129 @@ class MyParameterizedTest {
 }
 ```
 
+### Android tests
+
+#### Setting up the dependency
+```gradle
+repositories {
+    maven { url 'https://dl.bintray.com/qameta/maven' }
+}
+
+dependencies {
+    androidTestImplementation "io.qameta.allure:allure-kotlin-model:$LATEST_VERSION"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-commons:$LATEST_VERSION"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-junit4:$LATEST_VERSION"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$LATEST_VERSION@aar"
+}
+
+android {
+    defaultConfig {
+        testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
+    }
+}
+```
+
+AndroidX Test introduced a new `AndroidJUnit4` class runner that can be used for both **Robolectric** and **on-device instrumentation tests**. The same pattern is used for `AllureAndroidJUnit4` class runner. It attaches the allure listener to current class runner, but under the hood it uses `AndroidJUnit4`. All you need to do is to add `@RunWith(AllureAndroidJUnit4::class)` annotation to yor test. 
+
+```kotlin
+@RunWith(AllureAndroidJUnit4::class)
+class MyInstrumentationTest {
+    ...
+}
+```
+
+#### Robolectric tests
+
+Robolectric tests are simple unit tests, hence the API is the same. The report data will be placed in the same place as for unit tests. 
+
+#### On-device instrumentation tests
+
+##### Integration
+As on-device instrumentation test run on an actual device, the results have to be saved there as well. To do so permissions for accessing external storage are needed. If your app doesn't have those permissions, you can include them only in your debug build type (or any other build type under which the tests are executed):
+
+**src/debug/AndroidManifest.xml**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.qameta.allure.sample.junit4.android">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>
+```
+
+Moreover, Allure will grant itself those permissions at runtime, so you don't have to place any special logic for Android 6.0+ devices. 
+
+After the tests are finished you can pull the results from the external storage using an **adb** command like this one:
+```
+adb pull /sdcard/allure-results
+```
+Finally, you can generate the report via Allure CLI (see the [Allure Documentation][allure-cli]) or generate report with [allure-gradle][allure-gradle-plugin] plugin.
+
+
+##### Features
+
+The Allure Android API includes couple of features to make your reports a bit better.
+
+###### Steps
+You can use DSL-style steps anywhere:
+```kotlin
+@Test
+fun test() {
+    step("First Step") {
+        ...
+    }
+    step("Second Step") {
+        ...
+        // Steps can be nested
+        myStep("Param") 
+    }
+}
+
+// Steps are expressions
+fun myStep(param: String) = step("Do something with $param") {
+    ...
+}
+```
+
+###### Screenshot attachment
+
+Screenshot can be taken and appended as an attachment to step or test in which they were executed:
+```kotlin
+@Test
+fun screenshotExample() {
+    step("Step screenshot") {
+        Allure.screenshot(name = "ss_step", quality = 90)
+    }
+    Allure.screenshot(name = "ss_test", quality = 50)
+}
+```
+
+###### Screenshot rule
+
+Test rule to make the screenshot after each test and attach it to the test report. It includes a `mode` parameter which decides for which tests to make a screenshot:
+* SUCCESS - only successful tests
+* FAILURE - only failed tests
+* END - all tests
+
+```kotlin
+@get:Rule
+val logcatRule = ScreenshotRule(mode = ScreenshotRule.Mode.END, screenshotName = "ss_end")
+```
+
+###### Logcat rule
+
+Test rule that clears the logcat before each test and appends the log dump as an attachment in case of failure.
+
+```kotlin
+@get:Rule
+val logcatRule = LogcatRule()
+```
+
+## Samples
+Different examples of `allure-kotlin` usage are presented in `samples` directory. This includes:
+- `junit4-android` - complete Android sample with unit tests, robolectric tests and on device instrumentation tests
+
 ## Connection with allure-java
 
 Following modules have been migrated:
@@ -61,11 +192,14 @@ Following changes have to be made in order to keep the compatibility with Java 1
 
 ## Contributing
 
-Thanks to all people who contributed. Especially [@kamildziadek](https://github.com/kamildziadek) who started allure-kotlin. [[Contribute]](.github/CONTRIBUTING.md).
+Thanks to all people who contributed. Especially [@kamildziadek](https://github.com/kamildziadek) who started allure-kotlin. [Contribute](.github/CONTRIBUTING.md).
 
 ## License
+
 The Allure Framework is released under version 2.0 of the [Apache License][license].
 
+[allure-gradle-plugin]: https://github.com/allure-framework/allure-gradle
+[allure-cli]: https://docs.qameta.io/allure/#_reporting
 [gradle-test-listener]: https://discuss.gradle.org/t/how-to-attach-a-runlistener-to-your-junit-4-tests-in-gradle/30788
 [junit-foundation]: https://github.com/Nordstrom/JUnit-Foundation
 [allure-docs]: https://docs.qameta.io/allure/
