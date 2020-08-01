@@ -10,10 +10,10 @@ import kotlin.Result
  * Makes screenshot of a device upon an end of a test case based on the specified [mode].
  * It is then added as an attachment of a test case (with name [screenshotName]).
  *
- * By default, it will take a screenshot at the end of every test case (whether it failed or finished successfully).
+ * By default, it will take a screenshot at the end of failed test case.
  */
 class ScreenshotRule(
-    private val mode: Mode = Mode.END,
+    private val mode: Mode = Mode.FAILURE,
     private val screenshotName: String = "end-screenshot"
 ) : TestRule {
 
