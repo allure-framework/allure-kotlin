@@ -63,17 +63,13 @@ dependencies {
     androidTestImplementation "io.qameta.allure:allure-kotlin-model:$LATEST_VERSION"
     androidTestImplementation "io.qameta.allure:allure-kotlin-commons:$LATEST_VERSION"
     androidTestImplementation "io.qameta.allure:allure-kotlin-junit4:$LATEST_VERSION"
-    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$LATEST_VERSION@aar"
-}
-
-android {
-    defaultConfig {
-        testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
-    }
+    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$LATEST_VERSION"
 }
 ```
 
-AndroidX Test introduced a new `AndroidJUnit4` class runner that can be used for both **Robolectric** and **on-device instrumentation tests**. The same pattern is used for `AllureAndroidJUnit4` class runner. It attaches the allure listener to current class runner, but under the hood it uses `AndroidJUnit4`. All you need to do is to add `@RunWith(AllureAndroidJUnit4::class)` annotation to yor test. 
+#### Attaching listener
+
+AndroidX Test introduced a new `AndroidJUnit4` class runner that can be used for both **Robolectric** and **on-device instrumentation tests**. The same pattern is used for `AllureAndroidJUnit4` class runner. It attaches the allure listener to current class runner, but under the hood it uses `AndroidJUnit4`. All you need to do is to add `@RunWith(AllureAndroidJUnit4::class)` annotation to your test. 
 
 ```kotlin
 @RunWith(AllureAndroidJUnit4::class)
@@ -82,11 +78,23 @@ class MyInstrumentationTest {
 }
 ```
 
+Using AllureAndroidJUnit4 over class - works for both robolectric and on-device tests.
+
 #### Robolectric tests
 
 Robolectric tests are simple unit tests, hence the API is the same. The report data will be placed in the same place as for unit tests. 
 
 #### On-device instrumentation tests
+
+You can also use testInstrumentationRunner for setting up runner.
+
+```
+android {
+    defaultConfig {
+        testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
+    }
+}
+```
 
 ##### Integration
 As on-device instrumentation test run on an actual device, the results have to be saved there as well. To do so permissions for accessing external storage are needed. If your app doesn't have those permissions, you can include them only in your debug build type (or any other build type under which the tests are executed):
@@ -115,27 +123,6 @@ Finally, you can generate the report via Allure CLI (see the [Allure Documentati
 
 The Allure Android API includes couple of features to make your reports a bit better.
 
-###### Steps
-You can use DSL-style steps anywhere:
-```kotlin
-@Test
-fun test() {
-    step("First Step") {
-        ...
-    }
-    step("Second Step") {
-        ...
-        // Steps can be nested
-        myStep("Param") 
-    }
-}
-
-// Steps are expressions
-fun myStep(param: String) = step("Do something with $param") {
-    ...
-}
-```
-
 ###### Screenshot attachment
 
 Screenshot can be taken and appended as an attachment to step or test in which they were executed:
@@ -143,9 +130,9 @@ Screenshot can be taken and appended as an attachment to step or test in which t
 @Test
 fun screenshotExample() {
     step("Step screenshot") {
-        Allure.screenshot(name = "ss_step", quality = 90)
+        Allure.allureScreenshot(name = "ss_step", quality = 90, scale = 1.0f)
     }
-    Allure.screenshot(name = "ss_test", quality = 50)
+    Allure.allureScreenshot(name = "ss_test", quality = 50, scale = 1.0f)
 }
 ```
 
@@ -170,7 +157,16 @@ Test rule that clears the logcat before each test and appends the log dump as an
 val logcatRule = LogcatRule()
 ```
 
+###### Window hierarchy rule
+
+You can use WindowHierarchyRule to capture a window hierarchy via uiautomator in case of Throwable during test.
+```kotlin
+@get:Rule
+val windowHierarchyRule = WindowHierarchyRule()
+```
+
 ## Samples
+
 Different examples of `allure-kotlin` usage are presented in `samples` directory. This includes:
 - `junit4-android` - complete Android sample with unit tests, robolectric tests and on device instrumentation tests
 
