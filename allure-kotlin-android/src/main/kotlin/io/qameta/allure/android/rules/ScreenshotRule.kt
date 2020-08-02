@@ -14,7 +14,7 @@ import kotlin.Result
  */
 class ScreenshotRule(
     private val mode: Mode = Mode.FAILURE,
-    private val screenshotName: String = "end-screenshot"
+    private val screenshotName: String = "failure-screenshot"
 ) : TestRule {
 
     override fun apply(base: Statement?, description: Description?): Statement = object : Statement() {
