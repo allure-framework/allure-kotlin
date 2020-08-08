@@ -130,9 +130,9 @@ Screenshot can be taken and appended as an attachment to step or test in which t
 @Test
 fun screenshotExample() {
     step("Step screenshot") {
-        Allure.allureScreenshot(name = "ss_step", quality = 90, scale = 1.0f)
+        allureScreenshot(name = "ss_step", quality = 90, scale = 1.0f)
     }
-    Allure.allureScreenshot(name = "ss_test", quality = 50, scale = 1.0f)
+    allureScreenshot(name = "ss_test", quality = 50, scale = 1.0f)
 }
 ```
 
