@@ -63,7 +63,7 @@ dependencies {
     androidTestImplementation "io.qameta.allure:allure-kotlin-model:$LATEST_VERSION"
     androidTestImplementation "io.qameta.allure:allure-kotlin-commons:$LATEST_VERSION"
     androidTestImplementation "io.qameta.allure:allure-kotlin-junit4:$LATEST_VERSION"
-    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$LATEST_VERSION"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$LATEST_VERSION@aar"
 }
 ```
 
