@@ -5,6 +5,8 @@ plugins {
     id("kotlin-android")
 }
 
+apply(plugin = "com.github.dcendents.android-maven")
+
 android {
     compileSdkVersion(Versions.Android.compileSdk)
     defaultConfig {
