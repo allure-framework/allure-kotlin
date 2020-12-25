@@ -35,11 +35,10 @@ android {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(kotlin("stdlib-jdk7", Versions.kotlin))
+    implementation(kotlin("stdlib-jdk7"))
 
-    implementation("androidx.appcompat:appcompat:${Versions.Android.androidX}")
-    implementation("androidx.core:core-ktx:${Versions.Android.androidX}")
+    implementation("androidx.appcompat:appcompat:${Versions.Android.androidXappcompat}")
+    implementation("androidx.core:core-ktx:${Versions.Android.androidXcore}")
 
     listOf(
             project(":allure-kotlin-android"),

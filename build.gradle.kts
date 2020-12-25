@@ -1,6 +1,7 @@
 plugins {
     java
     kotlin("jvm") version Versions.kotlin
+    kotlin("plugin.serialization") version Versions.kotlin
 }
 
 buildscript {
@@ -13,7 +14,6 @@ buildscript {
         classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}")
         classpath("com.android.tools.build:gradle:${Versions.Android.gradlePlugin}")
     }
@@ -43,7 +43,7 @@ configure(subprojects
     apply(from = "$gradleScriptDir/maven-publish.gradle")
 
     dependencies {
-        implementation(kotlin("stdlib", Versions.kotlin))
+        implementation(kotlin("stdlib"))
     }
 
     configure<JavaPluginConvention> {

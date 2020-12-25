@@ -2,7 +2,7 @@ description = "Allure Kotlin Android Integration"
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
+    kotlin("android")
 }
 
 apply(plugin = "com.github.dcendents.android-maven")
@@ -27,9 +27,8 @@ android {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":allure-kotlin-junit4"))
-    implementation(kotlin("stdlib-jdk7", Versions.kotlin))
+    implementation(kotlin("stdlib-jdk7"))
     implementation("androidx.test.ext:junit:${Versions.Android.Test.junit}")
     implementation("androidx.test:runner:${Versions.Android.Test.runner}")
     implementation("androidx.multidex:multidex:${Versions.Android.multiDex}")
