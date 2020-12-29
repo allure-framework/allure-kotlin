@@ -2,7 +2,8 @@ description = "Allure Kotlin Commons"
 
 dependencies {
     api(project(":allure-kotlin-model"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.kontlinxSerialization}")
+    implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kontlinxSerialization}")
     testImplementation("io.github.benas:random-beans:${Versions.randomBeans}")
     testImplementation("io.github.glytching:junit-extensions:${Versions.junitExtensions}")
     testImplementation("org.assertj:assertj-core:${Versions.assertJ}")

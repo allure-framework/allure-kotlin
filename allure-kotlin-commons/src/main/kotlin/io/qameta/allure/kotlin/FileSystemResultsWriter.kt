@@ -3,21 +3,20 @@ package io.qameta.allure.kotlin
 import io.qameta.allure.kotlin.model.TestResult
 import io.qameta.allure.kotlin.model.TestResultContainer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.util.UUID
 
 class FileSystemResultsWriter(private val outputDirectory: File) : AllureResultsWriter {
-    private val mapper: Json = Json(JsonConfiguration(prettyPrint = true, useArrayPolymorphism = true))
+    private val mapper: Json = Json { prettyPrint = true; useArrayPolymorphism = true }
 
     override fun write(testResult: TestResult) {
         val testResultName = generateTestResultName(testResult.uuid)
         createDirectories(outputDirectory)
         val file = outputDirectory.resolve(testResultName)
         try {
-            val json = mapper.stringify(TestResult.serializer(), testResult)
+            val json = mapper.encodeToString(TestResult.serializer(), testResult)
             file.writeText(json)
         } catch (e: IOException) {
             throw AllureResultsWriteException("Could not write Allure test result", e)
@@ -29,7 +28,7 @@ class FileSystemResultsWriter(private val outputDirectory: File) : AllureResults
         createDirectories(outputDirectory)
         val filePath = outputDirectory.resolve(testResultContainerName)
         try {
-            val json = mapper.stringify(TestResultContainer.serializer(), testResultContainer)
+            val json = mapper.encodeToString(TestResultContainer.serializer(), testResultContainer)
             filePath.writeText(json)
         } catch (e: IOException) {
             throw AllureResultsWriteException("Could not write Allure test result container", e)

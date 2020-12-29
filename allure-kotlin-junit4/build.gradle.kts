@@ -2,6 +2,7 @@ description = "Allure Kotlin JUnit 4 Integration"
 
 dependencies {
     api(project(":allure-kotlin-commons"))
+    implementation(kotlin("reflect"))
     implementation("junit:junit:${Versions.junit4}")
     testImplementation("org.assertj:assertj-core:${Versions.assertJ}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.junit5}")
