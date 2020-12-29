@@ -9,7 +9,10 @@ import java.io.InputStream
 import java.util.UUID
 
 class FileSystemResultsWriter(private val outputDirectory: File) : AllureResultsWriter {
-    private val mapper: Json = Json { prettyPrint = true; useArrayPolymorphism = true }
+    private val mapper: Json = Json {
+        prettyPrint = true
+        useArrayPolymorphism = true
+    }
 
     override fun write(testResult: TestResult) {
         val testResultName = generateTestResultName(testResult.uuid)
