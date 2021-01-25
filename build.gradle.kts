@@ -51,6 +51,32 @@ configure(subprojects
         targetCompatibility = JavaVersion.VERSION_1_6
     }
 
+    tasks.jar {
+        manifest {
+            attributes(mapOf(
+                    "Implementation-Title" to project.name,
+                    "Implementation-Version" to project.version
+            ))
+        }
+    }
+
+    val sourceJar by tasks.creating(Jar::class) {
+        from(sourceSets.getByName("main").allSource)
+        archiveClassifier.set("sources")
+    }
+
+    val javadocJar by tasks.creating(Jar::class) {
+        from(tasks.getByName("javadoc"))
+        archiveClassifier.set("javadoc")
+    }
+
+    tasks.withType(Javadoc::class) {
+        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    }
+
+    artifacts.add("archives", sourceJar)
+    artifacts.add("archives", javadocJar)
+
     tasks.test {
         systemProperty("allure.model.indentOutput", "true")
         testLogging {
