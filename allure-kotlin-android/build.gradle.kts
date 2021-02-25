@@ -26,6 +26,22 @@ android {
     }
 }
 
+
+val sourcesJar =  tasks.register<Jar>(name = "sourceJar") {
+    from(android.sourceSets["main"].java.srcDirs)
+    classifier = "sources"
+}
+
+val javadocJar = tasks.register<Jar>(name = "javadocJar") {
+    archiveClassifier.set("javadoc")
+    from("javadoc")
+}
+
+artifacts {
+    add("archives", javadocJar)
+    add("archives", sourcesJar)
+}
+
 dependencies {
     api(project(":allure-kotlin-junit4"))
     implementation(kotlin("stdlib-jdk7"))
