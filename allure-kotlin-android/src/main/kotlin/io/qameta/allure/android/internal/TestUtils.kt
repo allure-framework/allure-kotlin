@@ -20,7 +20,7 @@ internal fun isDeviceTest(): Boolean =
     System.getProperty("java.runtime.name")?.toLowerCase()?.contains("android") ?: false
 
 internal fun requestExternalStoragePermissions() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Build.VERSION.SDK_INT > Build.VERSION_CODES.P ) return
 
     with(PermissionRequester()) {
         addPermissions("android.permission.WRITE_EXTERNAL_STORAGE")
