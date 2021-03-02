@@ -20,6 +20,7 @@ buildscript {
 }
 
 val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
+apply(from = "$gradleScriptDir/maven-publish.gradle")
 
 allprojects {
     group = "io.qameta.allure"
