@@ -20,12 +20,25 @@ internal fun isDeviceTest(): Boolean =
     System.getProperty("java.runtime.name")?.toLowerCase()?.contains("android") ?: false
 
 internal fun requestExternalStoragePermissions() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Build.VERSION.SDK_INT > Build.VERSION_CODES.P ) return
-
-    with(PermissionRequester()) {
-        addPermissions("android.permission.WRITE_EXTERNAL_STORAGE")
-        addPermissions("android.permission.READ_EXTERNAL_STORAGE")
-        requestPermissions()
+    when {
+        Build.VERSION.SDK_INT > Build.VERSION_CODES.M && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P -> {
+            with(PermissionRequester()) {
+                addPermissions("android.permission.WRITE_EXTERNAL_STORAGE")
+                addPermissions("android.permission.READ_EXTERNAL_STORAGE")
+                requestPermissions()
+            }
+        }
+        Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> {
+            uiDevice?.let {
+                it.executeShellCommand("appops set --uid ${it.currentPackageName} LEGACY_STORAGE allow")
+            }
+        }
+        Build.VERSION.SDK_INT == Build.VERSION_CODES.R -> {
+            uiDevice?.let {
+                it.executeShellCommand("appops set --uid ${it.currentPackageName} MANAGE_EXTERNAL_STORAGE allow")
+            }
+        }
+        else -> return
     }
 }
 
