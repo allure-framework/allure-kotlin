@@ -15,8 +15,8 @@ object Versions {
     object Android {
         const val gradlePlugin = "4.0.1"
 
-        const val compileSdk = 28
-        const val targetSdk = 28
+        const val compileSdk = 30
+        const val targetSdk = 30
         const val minSdk = 18
 
         const val androidXappcompat = "1.2.0"
