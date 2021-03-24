@@ -30,12 +30,12 @@ internal fun requestExternalStoragePermissions() {
         }
         Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> {
             uiDevice?.let {
-                it.executeShellCommand("appops set --uid ${it.currentPackageName} LEGACY_STORAGE allow")
+                it.executeShellCommand("appops set --uid ${InstrumentationRegistry.getInstrumentation().targetContext.packageName} LEGACY_STORAGE allow")
             }
         }
         Build.VERSION.SDK_INT == Build.VERSION_CODES.R -> {
             uiDevice?.let {
-                it.executeShellCommand("appops set --uid ${it.currentPackageName} MANAGE_EXTERNAL_STORAGE allow")
+                it.executeShellCommand("appops set --uid ${InstrumentationRegistry.getInstrumentation().targetContext.packageName} MANAGE_EXTERNAL_STORAGE allow")
             }
         }
         else -> return
