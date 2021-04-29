@@ -1,5 +1,10 @@
 plugins {
     java
+    signing
+    `maven-publish`
+
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+
     kotlin("jvm") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
 }
@@ -12,7 +17,6 @@ buildscript {
     }
     dependencies {
         classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}")
         classpath("com.android.tools.build:gradle:${Versions.Android.gradlePlugin}")
@@ -20,6 +24,12 @@ buildscript {
 }
 
 val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
+
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
 
 allprojects {
     group = "io.qameta.allure"
@@ -32,15 +42,15 @@ allprojects {
         jcenter()
     }
 
-    apply(from = "$gradleScriptDir/bintray.gradle")
 }
 
 configure(subprojects
         .filter { !it.name.contains("android") }
         .filter { it.parent?.name != "samples" }
 ) {
+    apply(plugin = "signing")
+    apply(plugin = "maven-publish")
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(from = "$gradleScriptDir/maven-publish.gradle")
 
     dependencies {
         implementation(kotlin("stdlib"))
@@ -74,8 +84,54 @@ configure(subprojects
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
     }
 
-    artifacts.add("archives", sourceJar)
-    artifacts.add("archives", javadocJar)
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                artifact(javadocJar)
+                artifact(sourceJar)
+
+                from(components["java"])
+
+                pom {
+                    name.set(project.name)
+                    description.set("Module ${project.name} of Allure Framework.")
+                    url.set("https://github.com/allure-framework/allure-kotlin")
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("kamildziadek")
+                            name.set("Kamil Dziadek")
+                            email.set("kamildziadek0@gmail.com")
+                        }
+                        developer {
+                            id.set("viclovsky")
+                            name.set("Victor Orlovsky")
+                            email.set("viclovsky@gmail.com")
+                        }
+                    }
+                    scm {
+                        developerConnection.set("scm:git:git://github.com/allure-framework/allure-kotlin")
+                        connection.set("scm:git:git://github.com/allure-framework/allure-kotlin")
+                        url.set("https://github.com/allure-framework/allure-kotlin")
+                    }
+                    issueManagement {
+                        system.set("GitHub Issues")
+                        url.set("hhttps://github.com/allure-framework/allure-kotlin/issue")
+                    }
+                }
+            }
+
+        }
+    }
+
+    signing {
+        sign(publishing.publications["maven"])
+    }
 
     tasks.test {
         systemProperty("allure.model.indentOutput", "true")
