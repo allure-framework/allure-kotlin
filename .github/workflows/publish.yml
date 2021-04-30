@@ -23,12 +23,12 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
       - name: "Build"
         run: |
-          ./gradlew build -Pversion=2.2.0 \
+          ./gradlew build -Pversion=${GITHUB_REF:10} \
                     -x :samples:junit4-android:testReleaseUnitTest \
                     -x :samples:junit4-android:testDebugUnitTest
       - name: "Gradle Publish"
         run: |
-          ./gradlew publishToSonatype -Pversion=2.2.0 \
+          ./gradlew publishToSonatype -Pversion=${GITHUB_REF:10} \
                     -Psigning.keyId=${GPG_KEY_ID} \
                     -Psigning.password=${GPG_PASSPHRASE} \
                     -Psigning.secretKeyRingFile=${GITHUB_WORKSPACE}/${GPG_KEY_ID}.gpg
