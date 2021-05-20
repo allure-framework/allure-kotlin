@@ -1,5 +1,13 @@
-[![Build Status](https://github.com/allure-framework/allure-kotlin/workflows/Build/badge.svg)](https://github.com/allure-framework/allure-kotlin/actions)
-[![Download](https://api.bintray.com/packages/qameta/maven/allure-kotlin/images/download.svg)](https://bintray.com/qameta/maven/allure-kotlin/_latestVersion)
+[build]: https://github.com/allure-framework/allure-kotlin/actions
+[build-badge]: https://github.com/allure-framework/allure-kotlin/workflows/Build/badge.svg
+[release]: https://github.com/allure-framework/allure-kotlin/releases/latest "Latest release"
+[release-badge]: https://img.shields.io/github/release/allure-framework/allure-kotlin.svg?style=flat
+[maven]: https://repo.maven.apache.org/maven2/io/qameta/allure/allure-kotlin-android/ "Maven Central"
+[maven-badge]: https://img.shields.io/maven-central/v/io.qameta.allure/allure-kotlin-android.svg?style=flat
+[license]: http://www.apache.org/licenses/LICENSE-2.0
+[license-badge]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+
+[![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![License][license-badge]][license]
 
 # Allure Kotlin Integrations
 
@@ -21,7 +29,7 @@ Check out the [Allure Documentation][allure-docs].
 #### Setting up the dependency
 ```gradle
 repositories {
-    maven { url 'https://dl.bintray.com/qameta/maven' }
+    mavenCentral()
 }
 
 dependencies {
@@ -56,7 +64,7 @@ class MyParameterizedTest {
 #### Setting up the dependency
 ```gradle
 repositories {
-    maven { url 'https://dl.bintray.com/qameta/maven' }
+    mavenCentral()
 }
 
 dependencies {
@@ -200,4 +208,3 @@ The Allure Framework is released under version 2.0 of the [Apache License][licen
 [junit-foundation]: https://github.com/Nordstrom/JUnit-Foundation
 [allure-docs]: https://docs.qameta.io/allure/
 [maven-surfire-plugin]: https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html
-[license]: http://www.apache.org/licenses/LICENSE-2.0 "Apache License 2.0"
