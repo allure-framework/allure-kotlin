@@ -1,6 +1,6 @@
 object Versions {
-    const val kotlin = "1.4.32"
-    const val kontlinxSerialization = "1.1.0"
+    const val kotlin = "1.5.0"
+    const val kontlinxSerialization = "1.2.1"
 
     const val junit4 = "4.13.2"
     const val junit5 = "5.5.2"
