@@ -13,10 +13,8 @@ buildscript {
     repositories {
         mavenCentral()
         google()
-        jcenter()
     }
     dependencies {
-        classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}")
         classpath("com.android.tools.build:gradle:${Versions.Android.gradlePlugin}")
@@ -37,11 +35,14 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven(url = "https://kotlin.bintray.com/kotlinx")
         google()
-        jcenter()
     }
 
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_6.toString()
+        }
+    }
 }
 
 configure(subprojects

@@ -7,7 +7,7 @@ plugins {
     signing
 }
 
-apply(plugin = "com.github.dcendents.android-maven")
+apply(plugin = "maven-publish")
 
 android {
     compileSdkVersion(Versions.Android.compileSdk)
