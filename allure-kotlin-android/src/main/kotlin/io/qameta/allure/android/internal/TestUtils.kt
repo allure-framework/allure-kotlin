@@ -17,7 +17,7 @@ import java.io.File
  */
 @SuppressLint("DefaultLocale")
 internal fun isDeviceTest(): Boolean =
-    System.getProperty("java.runtime.name")?.toLowerCase()?.contains("android") ?: false
+    System.getProperty("java.runtime.name")?.lowercase()?.contains("android") ?: false
 
 internal fun requestExternalStoragePermissions() {
     when {
