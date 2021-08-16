@@ -52,7 +52,7 @@ class SampleCalculatorTest {
             SampleCalculator().subtract(x = x, y = y)
         }
         step("Verify correctness") {
-            assertThat(actual, `is`(-2))
+            assertThat(actual, `is`(-1))
         }
 
     }
