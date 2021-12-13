@@ -458,5 +458,24 @@ class AnnotationUtilsTest {
                 Assertions.tuple("owner", "tester2")
             )
     }
+
+    @Test
+    fun superClassLabelsShouldPresents() {
+        Assertions.assertThat(getLabels(SubClassWithoutLabelAndLink::class.java))
+                .containsExactly(Label("feature", "super-class-feature"))
+    }
+
+    @Test
+    fun superClassLinksShouldPresents() {
+        Assertions.assertThat(getLinks(SubClassWithoutLabelAndLink::class.java))
+                .extracting(function(Link::url))
+                .containsExactlyInAnyOrder("https://example-url.com")
+    }
+
+    @Feature("super-class-feature")
+    @io.qameta.allure.kotlin.Link("someValue", "someName", "https://example-url.com")
+    abstract class SuperClassWithLabelAndLink
+
+    class SubClassWithoutLabelAndLink : SuperClassWithLabelAndLink()
 }
 
