@@ -105,25 +105,22 @@ android {
 ```
 
 ##### Integration
-As on-device instrumentation test run on an actual device, the results have to be saved there as well. To do so permissions for accessing external storage are needed. If your app doesn't have those permissions, you can include them only in your debug build type (or any other build type under which the tests are executed):
+As on-device instrumentation test run on an actual device, the results have to be saved there as well. 
+You don't need to add any permissions to manifest: results are saved in an app files directory, e.g.
+`/data/data/com.example/files/allure-results`.
 
-**src/debug/AndroidManifest.xml**
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.qameta.allure.sample.junit4.android">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-</manifest>
+After the tests are finished you can move the results to the external storage and pull the files using an **adb** like this one:
 ```
+# Assuming your package is com.example
+adb exec-out run-as com.example sh -c 'cd /data/data/com.example/files && tar cf - allure-results' > allure-results.tar
 
-Moreover, Allure will grant itself those permissions at runtime, so you don't have to place any special logic for Android 6.0+ devices. 
-
-After the tests are finished you can pull the results from the external storage using an **adb** command like this one:
-```
-adb pull /sdcard/allure-results
+# Or using pull
+$ adb shell
+$ run-as com.example sh -c 'cd /data/data/com.example/files && tar cf - allure-results' | tar xvf - -C /data/local/tmp
+# Ignore the permission errors
+$ exit
+$ adb pull /data/local/tmp/allure-results
 ```
 Finally, you can generate the report via Allure CLI (see the [Allure Documentation][allure-cli]) or generate report with [allure-gradle][allure-gradle-plugin] plugin.
 

@@ -6,8 +6,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.runner.AndroidJUnitRunner
 import io.qameta.allure.android.AllureAndroidLifecycle
 import io.qameta.allure.android.internal.isDeviceTest
-import io.qameta.allure.android.internal.requestExternalStoragePermissions
-import io.qameta.allure.android.listeners.ExternalStoragePermissionsListener
 import io.qameta.allure.kotlin.Allure
 import io.qameta.allure.kotlin.junit4.AllureJunit4
 import org.junit.runner.*
@@ -15,8 +13,7 @@ import org.junit.runner.manipulation.*
 import org.junit.runner.notification.*
 
 /**
- * Wrapper over [AndroidJUnit4] that attaches the [AllureJunit4] listener and
- * grants external storage permissions for tests running on a device (required for the test results to be saved).
+ * Wrapper over [AndroidJUnit4] that attaches the [AllureJunit4] listener
  */
 class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
 
@@ -31,7 +28,6 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
 
     private fun createListener(): RunListener? =
         if (isDeviceTest()) {
-            requestExternalStoragePermissions()
             createDeviceListener()
         } else {
             createRobolectricListener()
@@ -77,7 +73,6 @@ open class AllureAndroidJUnitRunner : AndroidJUnitRunner() {
         Allure.lifecycle = AllureAndroidLifecycle
         val listenerArg = listOfNotNull(
             arguments.getCharSequence("listener"),
-            ExternalStoragePermissionsListener::class.java.name,
             AllureJunit4::class.java.name
         ).joinToString(separator = ",")
         arguments.putCharSequence("listener", listenerArg)

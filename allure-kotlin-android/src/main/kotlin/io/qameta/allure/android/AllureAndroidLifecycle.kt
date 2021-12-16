@@ -1,6 +1,6 @@
 package io.qameta.allure.android
 
-import android.os.Environment
+import androidx.test.platform.app.InstrumentationRegistry
 import io.qameta.allure.kotlin.AllureLifecycle
 import io.qameta.allure.kotlin.FileSystemResultsWriter
 import io.qameta.allure.kotlin.util.PropertiesUtils
@@ -14,5 +14,5 @@ object AllureAndroidLifecycle : AllureLifecycle(writer = FileSystemResultsWriter
  */
 private fun obtainResultsDirectory(): File {
     val defaultAllurePath = PropertiesUtils.resultsDirectoryPath
-    return File(Environment.getExternalStorageDirectory(), defaultAllurePath)
+    return File(InstrumentationRegistry.getInstrumentation().targetContext.filesDir, defaultAllurePath)
 }
