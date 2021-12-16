@@ -27,7 +27,7 @@ object AnnotationUtils {
      */
     @JvmStatic
     fun getLinks(annotatedElement: AnnotatedElement): Set<Link> {
-        return getLinks(*annotatedElement.declaredAnnotations)
+        return getLinks(*annotatedElement.annotations)
     }
 
     /**
@@ -60,7 +60,7 @@ object AnnotationUtils {
      */
     @JvmStatic
     fun getLabels(annotatedElement: AnnotatedElement): Set<Label> {
-        return getLabels(*annotatedElement.declaredAnnotations)
+        return getLabels(*annotatedElement.annotations)
     }
 
     /**
