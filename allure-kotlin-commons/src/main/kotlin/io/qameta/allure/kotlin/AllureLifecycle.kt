@@ -503,7 +503,7 @@ open class AllureLifecycle @JvmOverloads constructor(
 
         private fun getDefaultWriter(): FileSystemResultsWriter {
             val path = PropertiesUtils.resultsDirectoryPath
-            return FileSystemResultsWriter(File(path))
+            return FileSystemResultsWriter { File(path) }
         }
 
         private fun getDefaultNotifier(): LifecycleNotifier {
