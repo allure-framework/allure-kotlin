@@ -6,7 +6,7 @@ import io.qameta.allure.kotlin.FileSystemResultsWriter
 import io.qameta.allure.kotlin.util.PropertiesUtils
 import java.io.File
 
-object AllureAndroidLifecycle : AllureLifecycle(writer = FileSystemResultsWriter(obtainResultsDirectory()))
+object AllureAndroidLifecycle : AllureLifecycle(writer = FileSystemResultsWriter(::obtainResultsDirectory))
 
 /**
  * Obtains results directory as a [File] reference.

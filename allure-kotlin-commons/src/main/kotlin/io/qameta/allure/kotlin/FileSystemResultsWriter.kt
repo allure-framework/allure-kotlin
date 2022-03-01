@@ -8,7 +8,10 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.UUID
 
-class FileSystemResultsWriter(private val outputDirectory: File) : AllureResultsWriter {
+class FileSystemResultsWriter(private val outputDirectoryProvider: () -> File) : AllureResultsWriter {
+
+    private val outputDirectory by lazy { outputDirectoryProvider() }
+
     private val mapper: Json = Json {
         prettyPrint = true
         useArrayPolymorphism = true
