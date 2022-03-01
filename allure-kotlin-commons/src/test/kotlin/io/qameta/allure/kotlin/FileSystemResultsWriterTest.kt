@@ -14,15 +14,14 @@ import java.util.*
 class FileSystemResultsWriterTest {
     @Test
     fun shouldNotFailIfNoResultsDirectory(@TempDir folder: File) {
-        val resolve = folder.resolve("some-directory")
-        val writer = FileSystemResultsWriter(resolve)
+        val writer = FileSystemResultsWriter { folder.resolve("some-directory") }
         val testResult = generateTestResult()
         writer.write(testResult)
     }
 
     @Test
     fun shouldWriteTestResult(@TempDir folder: File) {
-        val writer = FileSystemResultsWriter(folder)
+        val writer = FileSystemResultsWriter { folder }
         val uuid = UUID.randomUUID().toString()
         val testResult = generateTestResult(uuid)
         writer.write(testResult)
