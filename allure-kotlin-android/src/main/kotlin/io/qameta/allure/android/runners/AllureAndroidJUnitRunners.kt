@@ -15,7 +15,7 @@ import org.junit.runner.notification.*
 /**
  * Wrapper over [AndroidJUnit4] that attaches the [AllureJunit4] listener
  */
-class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
+open class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
 
     private val delegate = AndroidJUnit4(clazz)
 
@@ -43,11 +43,14 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
      * if so it means that in one way or another the listener has already been attached.
      */
     private fun createDeviceListener(): RunListener? {
-        if (Allure.lifecycle == AllureAndroidLifecycle) return null
+        if (Allure.lifecycle is AllureAndroidLifecycle) return null
 
-        Allure.lifecycle = AllureAndroidLifecycle
-        return AllureJunit4(AllureAndroidLifecycle)
+        val androidLifecycle = createAllureAndroidLifecycle()
+        Allure.lifecycle = androidLifecycle
+        return AllureJunit4(androidLifecycle)
     }
+
+    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle = AllureAndroidLifecycle()
 
     /**
      * Creates listener for tests running in an emulated Robolectric environment.
@@ -70,7 +73,7 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
 open class AllureAndroidJUnitRunner : AndroidJUnitRunner() {
 
     override fun onCreate(arguments: Bundle) {
-        Allure.lifecycle = AllureAndroidLifecycle
+        Allure.lifecycle = createAllureAndroidLifecycle()
         val listenerArg = listOfNotNull(
             arguments.getCharSequence("listener"),
             AllureJunit4::class.java.name
@@ -79,6 +82,7 @@ open class AllureAndroidJUnitRunner : AndroidJUnitRunner() {
         super.onCreate(arguments)
     }
 
+    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle = AllureAndroidLifecycle()
 }
 
 /**
