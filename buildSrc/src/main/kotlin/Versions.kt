@@ -24,7 +24,8 @@ object Versions {
         const val multiDex = "2.0.1"
 
         object Test {
-            const val runner = "1.3.0"
+            const val orchestrator = "1.4.1"
+            const val runner = "1.4.0"
             const val junit = "1.1.2"
             const val espresso = "3.3.0"
             const val robolectric = "4.3.1"

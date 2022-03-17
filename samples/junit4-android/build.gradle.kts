@@ -52,4 +52,5 @@ dependencies {
     }
 
     testImplementation("org.robolectric:robolectric:${Versions.Android.Test.robolectric}")
+    androidTestUtil("androidx.test:orchestrator:${Versions.Android.Test.orchestrator}")
 }

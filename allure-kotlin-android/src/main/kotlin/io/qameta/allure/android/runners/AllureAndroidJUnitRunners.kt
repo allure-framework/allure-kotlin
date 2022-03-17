@@ -6,8 +6,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.runner.AndroidJUnitRunner
 import io.qameta.allure.android.AllureAndroidLifecycle
 import io.qameta.allure.android.internal.isDeviceTest
+import io.qameta.allure.android.listeners.ExternalStoragePermissionsListener
+import io.qameta.allure.android.writer.TestStorageResultsWriter
 import io.qameta.allure.kotlin.Allure
 import io.qameta.allure.kotlin.junit4.AllureJunit4
+import io.qameta.allure.kotlin.util.PropertiesUtils
 import org.junit.runner.*
 import org.junit.runner.manipulation.*
 import org.junit.runner.notification.*
@@ -50,7 +53,8 @@ open class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable
         return AllureJunit4(androidLifecycle)
     }
 
-    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle = AllureAndroidLifecycle()
+    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle =
+        createDefaultAllureAndroidLifecycle()
 
     /**
      * Creates listener for tests running in an emulated Robolectric environment.
@@ -76,13 +80,15 @@ open class AllureAndroidJUnitRunner : AndroidJUnitRunner() {
         Allure.lifecycle = createAllureAndroidLifecycle()
         val listenerArg = listOfNotNull(
             arguments.getCharSequence("listener"),
-            AllureJunit4::class.java.name
+            AllureJunit4::class.java.name,
+            ExternalStoragePermissionsListener::class.java.name.takeIf { useTestStorage }
         ).joinToString(separator = ",")
         arguments.putCharSequence("listener", listenerArg)
         super.onCreate(arguments)
     }
 
-    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle = AllureAndroidLifecycle()
+    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle =
+        createDefaultAllureAndroidLifecycle()
 }
 
 /**
@@ -95,4 +101,17 @@ open class MultiDexAllureAndroidJUnitRunner : AllureAndroidJUnitRunner() {
         super.onCreate(arguments)
     }
 }
+
+private fun createDefaultAllureAndroidLifecycle() : AllureAndroidLifecycle {
+    if (useTestStorage) {
+        return AllureAndroidLifecycle(TestStorageResultsWriter())
+    }
+
+    return AllureAndroidLifecycle()
+}
+
+private val useTestStorage: Boolean
+    get() = PropertiesUtils.loadAllureProperties()
+        .getProperty("allure.results.useTestStorage", "false")
+        .toBoolean()
 
