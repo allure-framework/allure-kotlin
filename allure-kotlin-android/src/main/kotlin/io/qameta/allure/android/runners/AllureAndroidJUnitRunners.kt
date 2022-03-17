@@ -6,8 +6,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.runner.AndroidJUnitRunner
 import io.qameta.allure.android.AllureAndroidLifecycle
 import io.qameta.allure.android.internal.isDeviceTest
+import io.qameta.allure.android.listeners.ExternalStoragePermissionsListener
+import io.qameta.allure.android.writer.TestStorageResultsWriter
 import io.qameta.allure.kotlin.Allure
 import io.qameta.allure.kotlin.junit4.AllureJunit4
+import io.qameta.allure.kotlin.util.PropertiesUtils
 import org.junit.runner.*
 import org.junit.runner.manipulation.*
 import org.junit.runner.notification.*
@@ -15,7 +18,7 @@ import org.junit.runner.notification.*
 /**
  * Wrapper over [AndroidJUnit4] that attaches the [AllureJunit4] listener
  */
-class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
+open class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
 
     private val delegate = AndroidJUnit4(clazz)
 
@@ -43,11 +46,15 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
      * if so it means that in one way or another the listener has already been attached.
      */
     private fun createDeviceListener(): RunListener? {
-        if (Allure.lifecycle == AllureAndroidLifecycle) return null
+        if (Allure.lifecycle is AllureAndroidLifecycle) return null
 
-        Allure.lifecycle = AllureAndroidLifecycle
-        return AllureJunit4(AllureAndroidLifecycle)
+        val androidLifecycle = createAllureAndroidLifecycle()
+        Allure.lifecycle = androidLifecycle
+        return AllureJunit4(androidLifecycle)
     }
+
+    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle =
+        createDefaultAllureAndroidLifecycle()
 
     /**
      * Creates listener for tests running in an emulated Robolectric environment.
@@ -70,15 +77,18 @@ class AllureAndroidJUnit4(clazz: Class<*>) : Runner(), Filterable, Sortable {
 open class AllureAndroidJUnitRunner : AndroidJUnitRunner() {
 
     override fun onCreate(arguments: Bundle) {
-        Allure.lifecycle = AllureAndroidLifecycle
+        Allure.lifecycle = createAllureAndroidLifecycle()
         val listenerArg = listOfNotNull(
             arguments.getCharSequence("listener"),
-            AllureJunit4::class.java.name
+            AllureJunit4::class.java.name,
+            ExternalStoragePermissionsListener::class.java.name.takeIf { useTestStorage }
         ).joinToString(separator = ",")
         arguments.putCharSequence("listener", listenerArg)
         super.onCreate(arguments)
     }
 
+    protected open fun createAllureAndroidLifecycle() : AllureAndroidLifecycle =
+        createDefaultAllureAndroidLifecycle()
 }
 
 /**
@@ -91,4 +101,17 @@ open class MultiDexAllureAndroidJUnitRunner : AllureAndroidJUnitRunner() {
         super.onCreate(arguments)
     }
 }
+
+private fun createDefaultAllureAndroidLifecycle() : AllureAndroidLifecycle {
+    if (useTestStorage) {
+        return AllureAndroidLifecycle(TestStorageResultsWriter())
+    }
+
+    return AllureAndroidLifecycle()
+}
+
+private val useTestStorage: Boolean
+    get() = PropertiesUtils.loadAllureProperties()
+        .getProperty("allure.results.useTestStorage", "false")
+        .toBoolean()
 
