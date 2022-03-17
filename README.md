@@ -132,8 +132,10 @@ Enabling test storage for automation tests:
  - add `allure.results.useTestStorage=true` to `allure.properties` in androidTest resources
  - add `androidTestUtil("androidx.test:orchestrator:VERSION}` to your app dependencies (if you do not have it already)
 
-After that allure will use TestStorage to save test results. Test results will be saved by default into `/sdcard/googletest/test_outputfiles/allure-results`.
+After that allure will use TestStorage to save test results. Test results will be saved by default into `/sdcard/googletest/test_outputfiles/allure-results` 
 To get those files from device you can use e.g `adb exec-out sh -c 'cd  /sdcard/googletest/test_outputfiles && tar cf - allure-results' | tar xvf - -C /output/dir`
+
+*NOTE: allure-results folder name can be changed using `allure.results.directory` property.*
 
 ##### Features
 
