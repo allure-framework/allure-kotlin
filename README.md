@@ -124,6 +124,16 @@ $ adb pull /data/local/tmp/allure-results
 ```
 Finally, you can generate the report via Allure CLI (see the [Allure Documentation][allure-cli]) or generate report with [allure-gradle][allure-gradle-plugin] plugin.
 
+##### **Orchestrator TestStorage**
+When tests clears app data between each tests then saving test results in app storage will not work because old test results will be cleared when app data is cleared.
+To save test results directly on sdcard new TestStorage from androidx.test.services can be used.
+
+Enabling test storage for automation tests:
+ - add `allure.results.useTestStorage=true` to `allure.properties` in androidTest resources
+ - add `androidTestUtil("androidx.test:orchestrator:VERSION}` to your app dependencies (if you do not have it already)
+
+After that allure will use TestStorage to save test results. Test results will be saved by default into `/sdcard/googletest/test_outputfiles/allure-results`.
+To get those files from device you can use e.g `adb exec-out sh -c 'cd  /sdcard/googletest/test_outputfiles && tar cf - allure-results' | tar xvf - -C /output/dir`
 
 ##### Features
 
